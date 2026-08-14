@@ -2,7 +2,6 @@ import pandas as pd
 import requests
 import json
 
-
 EXPECTED_SCHEMA = [
     "transaction_id",
     "customer_email",
@@ -10,14 +9,12 @@ EXPECTED_SCHEMA = [
     "purchase_date"
 ]
 
-
 incoming_data = pd.DataFrame({
     "txn_id": ["A1", "A2"],
     "email_address": ["alice@test.com", "bob@test.com"],
     "total_cost": [150.00, 89.50],
     "date": ["2026-05-26", "2026-05-26"]
 })
-
 
 def heal_schema(expected_cols, actual_cols):
     prompt = f"""
@@ -60,9 +57,7 @@ def heal_schema(expected_cols, actual_cols):
         print(f"CRITICAL: LLM healing failed: {e}")
         return None
 
-
 def process_data(df, expected_schema):
-
     actual_cols = list(df.columns)
 
     if set(actual_cols) == set(expected_schema):
@@ -78,7 +73,6 @@ def process_data(df, expected_schema):
     )
 
     if mapping:
-
         print(f"Healing mapping: {mapping}")
 
         df = df.rename(columns=mapping)
@@ -101,7 +95,6 @@ def process_data(df, expected_schema):
     raise RuntimeError(
         "Self-healing failed."
     )
-
 
 healed_df = process_data(
     incoming_data,
